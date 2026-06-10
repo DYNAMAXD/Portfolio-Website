@@ -1,0 +1,417 @@
+/* ── Section ──────────────────────────────────────────────────────────────── */
+.contact { 
+  background:
+  radial-gradient(
+    circle at top,
+    rgba(143,201,255,0.06),
+    transparent 35%
+  ),
+  #020205;
+  position: relative;
+
+  min-height: 100svh;
+  padding:
+    clamp(3rem, 8vh, 5rem)
+    clamp(1rem, 5vw, 4rem)
+    clamp(2rem, 5vh, 4rem);
+ 
+
+  display: flex;
+  justify-content: center;
+
+  box-sizing: border-box;
+  overflow: hidden;  
+}
+
+ 
+
+/* Subtle grid */
+.contact__grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(143,201,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143,201,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.contact__inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 560px;
+  display: flex; flex-direction: column; gap: 1.75rem;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.contact__header { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.contact__eyebrow {
+  font-family: 'Courier New', monospace; font-size: 0.68rem;
+  letter-spacing: 0.18rem; text-transform: uppercase;
+  color: rgba(143,201,255,0.5);
+}
+
+.contact__title {
+  font-family: 'Georgia', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 400; color: #fff; margin: 0; letter-spacing: -0.02em;
+}
+.contact__title em {
+  font-style: italic;
+  background: linear-gradient(120deg, #8fc9ff, #ff0055);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Status bar ───────────────────────────────────────────────────────────── */
+.contact__status {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: 'Courier New', monospace; font-size: 0.68rem;
+  letter-spacing: 0.12em; color: rgba(255,255,255,0.35);
+  transition: color 0.4s;
+}
+.contact__status--composing { color: rgba(143,201,255,0.7); }
+.contact__status--sending   { color: rgba(143,201,255,1); }
+.contact__status--sent      { color: rgba(80,255,160,0.9); }
+.contact__status--error     { color: rgba(255,60,60,0.8); }
+
+.contact__status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  transition: background 0.4s;
+}
+/* Pulse when composing */
+.contact__status--composing .contact__status-dot {
+  animation: statusPulse 1.8s ease-in-out infinite;
+}
+/* Spin indicator when sending */
+.contact__status--sending .contact__status-dot {
+  border-radius: 50%;
+  animation: statusSpin 0.7s linear infinite;
+  background: none;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  width: 8px; height: 8px;
+}
+
+@keyframes statusPulse {
+  0%,100% { opacity:1; transform: scale(1); }
+  50%      { opacity:0.4; transform: scale(0.7); }
+}
+@keyframes statusSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────────── */
+.contact__form {
+  display: flex; flex-direction: column; gap: 1.2rem;
+  position: relative; overflow: hidden;
+  width: 100%;
+}
+
+/* Scan-line wipe */
+.contact__scan {
+  position: absolute; inset: 0; z-index: 20; pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(143,201,255,0.18) 49%,
+    rgba(143,201,255,0.28) 50%,
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  animation: scanWipe 1.3s ease-in-out forwards;
+}
+@keyframes scanWipe {
+  0%   { background-position: 0 -100%; opacity: 1; }
+  80%  { background-position: 0  100%; opacity: 1; }
+  100% { background-position: 0  100%; opacity: 0; }
+}
+
+/* ── Field ────────────────────────────────────────────────────────────────── */
+.contact__field { display: flex; flex-direction: column; gap: 0.4rem;min-width: 0;
+ }
+
+.contact__label {
+  font-family: 'Courier New', monospace; font-size: 0.65rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.contact__label-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.contact__char-count {
+  font-family: 'Courier New', monospace; font-size: 0.6rem;
+  color: rgba(255,255,255,0.25); transition: color 0.3s;
+}
+.contact__char-count--warn { color: rgba(255,100,60,0.8); }
+
+.contact__input,
+.contact__textarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  min-width: 0;
+
+  color: #fff;
+
+  font-family: 'Courier New', monospace;
+
+  font-size: 0.82rem;
+
+  padding: 0.65rem 0.85rem;
+
+  outline: none;
+
+  resize: none;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.25s,
+    background 0.25s;
+}
+.contact__input:focus,
+.contact__textarea:focus {
+  border-color: rgba(143,201,255,0.45);
+  background: rgba(143,201,255,0.04);
+}
+.contact__input::placeholder,
+.contact__textarea::placeholder { color: rgba(255,255,255,0.18); }
+
+/* Email redacted state */
+.contact__input--email {
+  transition: border-color 0.25s, background 0.25s, opacity 0.4s, text-decoration 0.4s;
+}
+.contact__input--redacted {
+  opacity: 0.28;
+  text-decoration: line-through;
+  pointer-events: none;
+  border-color: rgba(255,60,60,0.2);
+  /* Animate the grey-out */
+  animation: greyOut 0.4s ease forwards;
+}
+@keyframes greyOut {
+  0%   { filter: none; }
+  100% { filter: grayscale(1) brightness(0.5); }
+}
+
+/* ── Redact row ───────────────────────────────────────────────────────────── */
+.contact__redact-row {
+  display: flex; align-items: center; gap: 0.6rem; margin-top: 0.15rem;
+  position: relative;
+}
+
+.contact__redact-label {
+  display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+}
+
+.contact__checkbox {
+  width: 14px; height: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: border-color 0.25s, background 0.25s;
+  position: relative;
+}
+.contact__checkbox--checked {
+  border-color: rgba(255,60,60,0.5);
+  background: rgba(255,60,60,0.08);
+  animation: checkFlash 0.3s ease;
+}
+@keyframes checkFlash {
+  0%   { transform: scale(1.4); }
+  60%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+.contact__checkmark {
+  font-size: 10px; color: rgba(255,60,60,0.8); line-height: 1;
+}
+
+.contact__redact-text {
+  font-family: 'Courier New', monospace; font-size: 0.62rem;
+  letter-spacing: 0.12em; color: rgba(255,255,255,0.25);
+}
+
+/* Tooltip */
+.contact__tooltip {
+  font-family: 'Courier New', monospace; font-size: 0.6rem;
+  color: rgba(143,201,255,0.7);
+  background: rgba(10,10,20,0.95);
+  border: 1px solid rgba(143,201,255,0.2);
+  padding: 4px 8px;
+  white-space: normal;
+  max-width: 220px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  position: absolute;
+  left: 0; top: calc(100% + 6px);
+  z-index: 10;
+}
+.contact__tooltip--visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ── Gauge ────────────────────────────────────────────────────────────────── */
+.contact__field--msg { position: relative; }
+
+.contact__gauge {
+  margin-top: 0.5rem;
+  display: flex; justify-content: flex-end;
+}
+.contact__gauge-svg {
+  width: 90px; height: 54px; overflow: visible;
+}
+
+/* ── Submit ───────────────────────────────────────────────────────────────── */
+.contact__submit {
+  margin-top: 0.4rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer; align-self: flex-start;
+  transition: border-color 0.25s, background 0.25s, color 0.25s;
+  position: relative; overflow: hidden;
+}
+.contact__submit:hover:not(:disabled) {
+  border-color: rgba(143,201,255,0.6);
+  background: rgba(143,201,255,0.06);
+  color: #8fc9ff;
+}
+.contact__submit:disabled { cursor: default; opacity: 0.6; }
+.contact__submit--sent {
+  border-color: rgba(80,255,160,0.4) !important;
+  color: rgba(80,255,160,0.9) !important;
+}
+.contact__submit--error {
+  border-color: rgba(255,60,60,0.4) !important;
+  color: rgba(255,60,60,0.8) !important;
+}
+
+/* ── Footer line ──────────────────────────────────────────────────────────── */
+.contact__alt {
+  font-family: 'Courier New', monospace; font-size: 0.65rem;
+  color: rgba(255,255,255,0.2); letter-spacing: 0.05em; margin: 0;
+}
+.contact__alt a {
+  color: rgba(143,201,255,0.5); text-decoration: none;
+  transition: color 0.2s;
+}
+.contact__alt a:hover { color: #8fc9ff; }
+@media (max-width: 768px) {
+
+  .contact {
+    padding:
+      3.5rem
+      1.1rem
+      2.5rem;
+  }
+
+  .contact__inner {
+    max-width: 100%;
+    gap: 1.4rem;
+  }
+
+  .contact__title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .contact__status {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+
+  .contact__input,
+  .contact__textarea {
+    font-size: 16px;  
+    padding: 0.8rem 0.9rem;
+  }
+
+  .contact__textarea {
+    min-height: 140px;
+  }
+
+  .contact__submit {
+    width: 100%;
+
+    justify-content: center;
+
+    align-self: stretch;
+
+    text-align: center;
+
+    padding: 0.9rem 1rem;
+
+    font-size: 0.68rem;
+  }
+
+  .contact__gauge {
+    justify-content: center;
+  }
+
+  .contact__gauge-svg {
+    width: 78px;
+    height: 48px;
+  }
+
+  .contact__tooltip {
+    white-space: normal;
+
+    width: 180px;
+
+    line-height: 1.5;
+  }
+}
+.contact__input,
+.contact__textarea {
+  border-radius: 0;
+}
+.contact canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.contact__status {
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.contact__status-text {
+  overflow-wrap: anywhere;
+}
+.contact__status-text {
+  min-width: 0;
+}
+
+.contact__form,
+.contact__field,
+.contact__inner {
+  min-width: 0;
+}
+
+.contact__input,
+.contact__textarea {
+  max-width: 100%;
+}
+
+.contact__inner,
+.contact__form,
+.contact__field,
+.contact__input,
+.contact__textarea {
+  min-width: 0;
+}
+
+.contact__input,
+.contact__textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.contact__inner {
+  width: min(100%, 560px);
+}

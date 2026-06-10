@@ -1,0 +1,500 @@
+/* ── Section shell ──────────────────────────────────────────────────────────── */
+.projects {
+  background: #020205;
+  padding: clamp(4rem, 10vh, 8rem) clamp(1rem, 6vw, 4rem);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  overflow: hidden;
+}
+
+.projects__header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.projects__eyebrow {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(143,201,255,0.6);
+}
+
+.projects__title {
+  font-family: 'Georgia', serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.projects__title em {
+  font-style: italic;
+  background: linear-gradient(120deg, #ff0055, #4422ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Grid ───────────────────────────────────────────────────────────────────── */
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.2rem, 2.5vw, 2rem);
+  width: 100%;
+  max-width: 1100px;
+}
+
+@media (max-width: 900px) { .projects__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 580px) { .projects__grid { grid-template-columns: 1fr; } }
+
+/* ── Card wrapper — handles flip ─────────────────────────────────────────────── */
+.pc-wrapper {
+  perspective: 1000px;
+  height: 320px;
+}
+
+.pc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.pc-wrapper--flipped .pc {
+  transform: rotateY(180deg);
+}
+
+/* ── Shared face styles ──────────────────────────────────────────────────────── */
+.pc__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+/* ── FRONT ───────────────────────────────────────────────────────────────────── */
+.pc__face--front {
+  transform: rotateY(0deg);
+}
+
+/* The 3D tilt card (from the reference) */
+.pc__card {
+  width: 100%;
+  height: 100%;
+  padding-top: 44px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background:
+    linear-gradient(135deg, #0000 18.75%, #0d0d18 0 31.25%, #0000 0),
+    repeating-linear-gradient(45deg, #0d0d18 -6.25% 6.25%, #07070f 0 18.75%);
+  background-size: 50px 50px;
+  background-color: #07070f;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease-in-out;
+  box-shadow: rgba(0,0,0,0.5) 0px 30px 30px -10px;
+  position: relative;
+}
+
+.pc__card:hover {
+  background-position: -80px 80px, -80px 80px;
+  transform: rotate3d(0.5, 1, 0, 22deg);
+}
+
+/* Date box — floats above card surface */
+.pc__date-box {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 52px;
+  height: 52px;
+  background: rgba(2,2,5,0.9);
+  border: 1px solid rgba(143,201,255,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translate3d(0,0,60px);
+  pointer-events: none;
+}
+
+.pc__month {
+  font-family: 'Courier New', monospace;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  color: #8fc9ff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.pc__year {
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #8fc9ff;
+  line-height: 1;
+}
+
+/* Content box */
+.pc__content-box {
+  background: rgba(143,201,255,0.09);
+  padding: 20px 20px 20px 20px;
+  height: calc(100% - 44px);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pc__title {
+  display: inline-block;
+  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  transform: translate3d(0,0,40px);
+  transition: transform 0.4s;
+}
+.pc__card:hover .pc__title { transform: translate3d(0,0,55px); }
+
+.pc__desc {
+  font-family: 'Courier New', monospace;
+  font-size: .8rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+  transform: translate3d(0,0,20px);
+  transition: transform 0.4s;
+  flex: 1;
+}
+.pc__card:hover .pc__desc { transform: translate3d(0,0,40px); }
+
+.pc__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  transform: translate3d(0,0,15px);
+  transition: transform 0.4s;
+}
+.pc__card:hover .pc__skills { transform: translate3d(0,0,35px); }
+
+.pc__tag {
+  font-family: 'Courier New', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8fc9ff;
+  border: 1px solid rgba(143,201,255,0.3);
+  padding: 2px 7px;
+}
+
+/* ── Flip button — triangular corner ────────────────────────────────────────── */
+.pc__flip-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8fc9ff;
+  opacity: 0.45;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 5;
+  transform: translate3d(0,0,80px);   /* lifts above card face */
+  transform-style: preserve-3d;
+}
+.pc__flip-btn:hover { opacity: 1; transform: translate3d(0,0,80px) scale(1.15); }
+.pc__flip-btn svg { width: 100%; height: 100%; display: block; }
+
+/* Back-face flip btn rotated so triangle points the other way */
+.pc__flip-btn--back { transform: rotate(180deg); }
+.pc__flip-btn--back:hover { transform: rotate(180deg) scale(1.15); }
+
+/* ── BACK ────────────────────────────────────────────────────────────────────── */
+.pc__face--back {
+  transform: rotateY(180deg);
+  background: #07070f;
+  border: 2px solid rgba(255,0,85,0.2);
+}
+
+.pc__back-inner {
+  padding: 28px 24px 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+
+.pc__back-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,0,85,0.7);
+}
+
+.pc__back-title {
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Text pop-up on hover — each word slides up */
+.pc__back-text {
+  font-family: 'Courier New', monospace;
+
+  font-size: 0.82rem;
+
+  line-height: 1.75;
+
+  color: rgba(255,255,255,0.68);
+
+  margin: 0;
+
+  flex: 1;
+
+  opacity: 0;
+
+  transform: translateY(10px);
+
+  transition:
+    opacity 0.45s ease 0.7s,
+    transform 0.45s ease 0.7s;
+}
+
+/* when card is flipped */
+.pc-wrapper--flipped .pc__back-text {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+/* Skills tags on back */
+.pc__face--back .pc__skills {
+  transform: none;
+  opacity: 0;
+  transition: opacity 0.4s 0.25s;
+}
+.pc__face--back:hover .pc__skills {
+  opacity: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ProjectLink  —  add these rules to your ProjectsSection.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Base link ─────────────────────────────────────────────── */
+.pc__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  position: relative;
+  text-decoration: none;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  /* Inherit the card's accent — change to suit your palette */
+  color: var(--accent, #a78bfa);
+
+  /* clip the animated bar to this element */
+  overflow: hidden;
+  padding-bottom: 3px;
+}
+
+/* ── Text label ─────────────────────────────────────────────── */
+.pc__link-text {
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity   0.35s ease;
+}
+
+/* ── Arrow icon ─────────────────────────────────────────────── */
+.pc__link-icon {
+  display: flex;
+  align-items: center;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pc__link-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Animated underline / glow bar ─────────────────────────── */
+.pc__link-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1.5px;
+  width: 100%;
+  border-radius: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent, #a78bfa) 40%,
+    #e879f9,
+    var(--accent, #a78bfa) 60%,
+    transparent
+  );
+  background-size: 200% 100%;
+
+  /* hidden until hover */
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Hover / focus states ───────────────────────────────────── */
+.pc__link:hover .pc__link-text,
+.pc__link:focus-visible .pc__link-text {
+  transform: translateX(-3px);
+}
+
+.pc__link:hover .pc__link-icon,
+.pc__link:focus-visible .pc__link-icon {
+  /* arrow nudges right */
+  transform: translateX(4px);
+}
+
+.pc__link:hover .pc__link-bar,
+.pc__link:focus-visible .pc__link-bar {
+  transform: scaleX(1);
+  /* shimmer sweep */
+  animation: link-shimmer 1s linear infinite;
+}
+
+@keyframes link-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* ── Back-face variant: slightly lighter text ───────────────── */
+.pc__face--back .pc__link {
+  color: var(--accent-light, #c4b5fd);
+}
+
+/* ── Accessibility: keyboard focus ring ─────────────────────── */
+.pc__link:focus-visible {
+  outline: 2px solid var(--accent, #a78bfa);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+ 
+@keyframes pcLoader {
+
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(160%);
+  }
+
+}
+ 
+.pc__more-label {
+  position: absolute;
+
+  right: 1px;
+  bottom: 10px;
+
+  font-size: 0.72rem;
+
+  letter-spacing: 0.4em;
+
+  color: rgba(255,255,255,0.55);
+
+  transform: rotate(45deg);
+
+  transform-origin: center;
+
+  pointer-events: none;
+
+  z-index: 8;
+}
+
+ 
+.pc__progress-wrap {
+  margin-top: -50px;
+  padding-right: 20%;
+}
+
+.pc__progress-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pc__progress-label {
+  font-size: 0.62rem;
+
+  letter-spacing: 0.36em;
+
+  color: rgba(255,255,255,0.5);
+}
+
+.pc__progress-percent {
+  font-size: .7rem;
+
+  color: #7cb7ff;
+
+  font-weight: 700;
+}
+
+/* BAR CONTAINER */
+.pc__xpbar {
+  display: flex;
+}
+
+/* EACH BLOCK */
+.pc__xpbox {
+  width: 100%;
+  height: 12px;
+
+  background: rgba(255,255,255,0.08);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    inset 0 1px 1px rgba(0,0,0,0.4);
+}
+
+/* FILLED XP BLOCK */
+.pc__xpbox--active {
+  background:
+    linear-gradient(
+      to bottom,
+      #9ed0ff 0%,
+      #4f9dff 45%,
+      #2c6ed6 100%
+    );
+
+  border:
+    1px solid #8ec5ff;
+
+  box-shadow:
+    0 0 6px rgba(92,162,255,0.45),
+    inset 0 1px 1px rgba(255,255,255,0.35);
+}
+

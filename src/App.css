@@ -1,0 +1,9 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; overflow-x: hidden;
+  background: #020205; color: #fff;
+  scroll-behavior: smooth;
+}
+/* Remove any default body margin that causes right-side gaps */
+body { margin: 0; }
+main { width: 100%; }
