@@ -74,7 +74,7 @@ export default function FractalBackground() {
 
     const params = randomizeParams(alg.defaults);
 
-    const pointCount = adaptivePointCount(90000);
+    const pointCount = adaptivePointCount(50000);
 
     const rotX = randomRotationSpeed();
 
