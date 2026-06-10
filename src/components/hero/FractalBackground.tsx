@@ -102,7 +102,7 @@ export default function FractalBackground() {
       1000
     );
 
-    camera.position.set(0, 6, 4);
+    camera.position.set(0, 2, 4);
 
     const renderer = new WebGLRenderer({
       antialias: true,

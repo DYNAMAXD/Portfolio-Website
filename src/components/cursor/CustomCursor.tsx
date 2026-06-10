@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-
+ 
 export default function CustomCursor() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 //  const dotRef = useRef<HTMLDivElement | null>(null);
@@ -15,8 +15,8 @@ export default function CustomCursor() {
     };
 
     const params = {
-      pointsNumber: 30,
-      widthFactor: 0.2,
+      pointsNumber: 25,
+      widthFactor: 0.25,
       mouseThreshold: 0.6,
       spring: 0.4,
       friction: 0.5,
@@ -35,28 +35,16 @@ export default function CustomCursor() {
     }
 
     const mouseMoveHandler = (e: MouseEvent) => {
-      mouseMoved = true;
-    //   updateMousePosition(e.pageX, e.pageY);
+      mouseMoved = true; 
     updateMousePosition(e.clientX, e.clientY);
     };
 
     const clickHandler = (e: MouseEvent) => {
-    //   updateMousePosition(e.pageX, e.pageY);
       updateMousePosition(e.clientX, e.clientY);
     };
-
-    const touchHandler = (e: TouchEvent) => {
-    mouseMoved = true;
-      const touch = e.touches[0];
-
-      if (touch) {
-        updateMousePosition(touch.clientX, touch.clientY);
-      }
-    };
-
+ 
     window.addEventListener("mousemove", mouseMoveHandler);
     window.addEventListener("click", clickHandler);
-    window.addEventListener("touchmove", touchHandler);
 
     function setupCanvas() {
       canvas.width = window.innerWidth;
@@ -147,11 +135,6 @@ export default function CustomCursor() {
       window.removeEventListener(
         "click",
         clickHandler
-      );
-
-      window.removeEventListener(
-        "touchmove",
-        touchHandler
       );
 
       window.removeEventListener(

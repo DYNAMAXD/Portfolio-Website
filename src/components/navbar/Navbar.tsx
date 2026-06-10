@@ -27,7 +27,22 @@ export default function Navbar() {
       {/* Desktop links */}
       <ul className="nav__links">
         {LINKS.map(l => (
-          <li key={l}><button className="nav__link" onClick={() => scrollTo(l)}>{l}</button></li>
+
+                <li key={l}>
+          <button
+            className="nav__link"
+            onClick={() => {
+              if (l === 'About') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                scrollTo(l);
+              }
+            }}
+          >
+            {l}
+          </button>
+        </li>
+
         ))} 
       </ul>
 
@@ -36,13 +51,29 @@ export default function Navbar() {
         onClick={() => setOpen(o => !o)} aria-label="Menu">
         <span /><span /><span />
       </button>
-
+ 
       {/* Mobile drawer */}
       <div className={`nav__drawer ${open ? 'nav__drawer--open' : ''}`}>
         {LINKS.map(l => (
-          <button key={l} className="nav__drawer-link" onClick={() => scrollTo(l)}>{l}</button>
+          <button
+            key={l}
+            className="nav__drawer-link"
+            onClick={() => {
+              if (l === 'About') {
+                setOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                scrollTo(l);
+              }
+            }}
+          >
+            {l}
+          </button>
         ))}
-        <a className="nav__cta nav__cta--drawer" href="mailto:dynamicdivyansh925@gmail.com">Hire me</a>
+
+        <a className="nav__cta nav__cta--drawer" href="mailto:dynamicdivyansh925@gmail.com">
+          Hire me
+        </a>
       </div>
     </nav>
   );
