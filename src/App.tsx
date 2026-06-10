@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-// import './global.css';
-
+import './global.css'
 import Navbar from './components/navbar/Navbar';
 import HeroSection from './components/hero/HeroSection';
 import SkillsSection from './components/skills/SkillsSection';
@@ -11,34 +10,39 @@ import ContactSection from './components/contact/ContactSection';
 
 export default function App() {
 
-  const [showCursor, setShowCursor] = useState(true);
+  const [showCursor, setShowCursor] = useState(false); 
 
   useEffect(() => {
 
-    const mediaQuery = window.matchMedia('(pointer: coarse)');
+    const checkDevice = () => {
 
-    const handleChange = () => {
-      setShowCursor(!mediaQuery.matches);
+      const isTouchDevice =
+        window.matchMedia('(pointer: coarse)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0;
+
+      setShowCursor(!isTouchDevice);
     };
 
-    handleChange();
+    checkDevice();
 
-    mediaQuery.addEventListener('change', handleChange);
+    window.addEventListener('resize', checkDevice);
 
-    return () => { 
-      mediaQuery.removeEventListener('change', handleChange);
+    return () => {
+      window.removeEventListener('resize', checkDevice);
     };
 
   }, []);
 
   return (
-    <> 
-     {showCursor && <CustomCursor />}
+    <>
+      {showCursor && <CustomCursor />}
+
       <Navbar />
       <HeroSection />
       <SkillsSection />
       <ProjectsSection />
-      <ContactSection /> 
+      <ContactSection />
     </>
   );
 }

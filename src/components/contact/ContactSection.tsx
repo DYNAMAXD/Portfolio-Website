@@ -4,7 +4,7 @@ import './ContactSection.css';
 // ── EmailJS config — fill these in ────────────────────────────────────────── 
 const WEB3FORMS_ACCESS_KEY = "43c99d4f-59e2-4518-a37b-fe4f3dd32036";
 const MAX_CHARS = 500;
-
+ 
 // Transmission states
 const STATUS = { IDLE: 'idle', COMPOSING: 'composing', SENDING: 'sending', SENT: 'sent', ERROR: 'error' };
 
@@ -197,7 +197,7 @@ export default function ContactSection() {
             </div>
             <textarea
               id="c-msg" className="contact__textarea"
-              placeholder="Tell me about your project…"
+              placeholder="Hesitation is Defeat"
               value={message} maxLength={MAX_CHARS} required rows={5}
               onChange={e => setMessage(e.target.value)}
             />

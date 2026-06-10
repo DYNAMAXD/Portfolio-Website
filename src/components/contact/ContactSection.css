@@ -32,7 +32,7 @@
     linear-gradient(rgba(143,201,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(143,201,255,0.03) 1px, transparent 1px);
   background-size: 48px 48px;
-}
+} 
 
 .contact__inner {
   position: relative; z-index: 1;
@@ -51,7 +51,7 @@
 
 .contact__title {
   font-family: 'Georgia', serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2.8rem, 4vw, 3rem);
   font-weight: 400; color: #fff; margin: 0; letter-spacing: -0.02em;
 }
 .contact__title em {
@@ -317,17 +317,19 @@
   }
 
   .contact__title {
-    font-size: clamp(2rem, 9vw, 3rem);
+    /* font-size: clamp(2rem, 9vw, 3rem); */
+      font-size: clamp(5.4rem, 5vw, 4rem);
+
   }
 
   .contact__status {
-    font-size: 0.62rem;
+    font-size: 12.2rem;
     letter-spacing: 0.08em;
   }
 
   .contact__input,
   .contact__textarea {
-    font-size: 16px;  
+    font-size: 1.3rem;  
     padding: 0.8rem 0.9rem;
   }
 
@@ -360,8 +362,8 @@
 
   .contact__tooltip {
     white-space: normal;
-
-    width: 180px;
+    font-size: 1rem;
+    width: 70%;
 
     line-height: 1.5;
   }

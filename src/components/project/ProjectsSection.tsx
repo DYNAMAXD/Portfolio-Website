@@ -14,7 +14,7 @@ const PROJECTS = [
   // },
   {
     title: 'PhenoFusion 3D',
-    skills: ['Python', 'HyperSpectral Imaging', 'PyQt5' , "austrailian national university"],
+    skills: ['Python', 'HyperSpectral Imaging' , "austrailian national university"],
     month: 'JAN', year: '25',
     link: 'https://github.com/spsaswat/3d_hyperspec_ai',
     front: 'PhenoFusion 3D is an integrated 3D–hyperspectral analytics tool that extracts structural and spectral traits from plant scans.',
@@ -48,8 +48,8 @@ const PROJECTS = [
     skills: ['Torch', ' FastAPI', 'SDG'],
     month: 'OCT', year: '25',
     link: 'https://github.com/BeeBasic/food_for_everyone',
-    front: 'A hackathon project dedicated to fighting food waste. Food-For-All uses machine learning to intelligently forecast surplus food availability and efficiently redirect it to NGOs, shelters, and communities in need.',
-    back: 'We had picked the second goal "Zero Hunger" as a part of Sustainable Development Goals given by UN , We had went for a more Grounded Approach to this problem as we tried to be the bridge between the food surplus and food demands in a city.',
+    front: 'A hackathon project dedicated to fighting food waste.We used Machine Learning to forecast surplus food availability redirect it to NGOs, shelters, and communities in need.',
+    back: 'Tackling "Zero Hunger" from the Sustainable Development Goals by UN , we imagined a more Grounded Approach to this problem as we tried to be the bridge between the food surplus and food demands in a city.',
     progress_text: 'Completed',
     progress_percent: '100%',
   },   
@@ -94,71 +94,89 @@ function ProjectCard({ project }) {
               <span className="pc__month">{project.month}</span>
               <span className="pc__year">{project.year}</span>
             </div>
+
             <div className="pc__content-box">
 
-              
               <div className="pc__progress-wrap">
+                <div className="pc__progress-header">
+                  <span className="pc__progress-label">
+                    {project.progress_text}
+                  </span>
 
-              <div className="pc__progress-header">
-                <span className="pc__progress-label">
-                {project.progress_text}
-              </span>
+                  <span className="pc__progress-percent">
+                    {project.progress_percent}
+                  </span>
+                </div>
 
-              <span className="pc__progress-percent">
-                {project.progress_percent}
-              </span>
+                <div className="pc__xpbar">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={
+                        i < Math.floor(parseInt(project.progress_percent) / 10)
+                          ? 'pc__xpbox pc__xpbox--active'
+                          : 'pc__xpbox'
+                      }
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="pc__xpbar">
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={
-                     i < Math.floor(parseInt(project.progress_percent) / 10)
-                        ? 'pc__xpbox pc__xpbox--active'
-                        : 'pc__xpbox'
-                    }
-                  />
+
+              <span className="pc__title">
+                {project.title}
+              </span>
+
+              <div className="pc__skills">
+                {project.skills.map((s) => (
+                  <span key={s} className="pc__tag">
+                    {s}
+                  </span>
                 ))}
               </div>
-            </div>
-                
-              <span className="pc__title">  {project.title}  </span>
 
-              <p className="pc__desc">{project.front}</p>
-              <div className="pc__skills">
-                {project.skills.map(s => <span key={s} className="pc__tag">{s}</span>)}
-              </div>
               {project.link && <ProjectLink href={project.link} />}
-            </div> 
+            </div>
 
-          <span className="pc__more-label">
-            MORE
-          </span>
+            <span className="pc__more-label">
+              MORE
+            </span>
+
+            {/* MOVED INSIDE CARD */}
+            <button
+              className="pc__flip-btn"
+              onClick={() => setFlipped(true)}
+              title="Flip card"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M0 0 L24 0 L24 24 Z" />
+              </svg>
+            </button>
+
           </div>
-          <button
-          className="pc__flip-btn"
-          onClick={() => setFlipped(true)}
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M0 0 L24 0 L24 24 Z"/>
-          </svg>
-        </button>
         </div>
 
         {/* BACK */}
         <div className="pc__face pc__face--back">
           <div className="pc__back-inner">
-            <span className="pc__back-label">Behind the build</span>
-            <h3 className="pc__back-title">{project.title}</h3>
-            <p className="pc__back-text">{project.back}</p>
-            {project.link && <ProjectLink href={project.link} />}
+            <span className="pc__back-label">The build</span>
+
+            <p className="pc__back-text">
+              {project.front}
+            </p>
+            <span className="pc__back-label">Thoughts</span>
+            <p className="pc__back-text">
+              {project.back}
+            </p>
           </div>
+
           <button
             className="pc__flip-btn pc__flip-btn--back"
             onClick={() => setFlipped(false)}
             title="Flip back"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0 L24 0 L24 24 Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M0 0 L24 0 L24 24 Z" />
+            </svg>
           </button>
         </div>
 
@@ -166,7 +184,6 @@ function ProjectCard({ project }) {
     </div>
   );
 }
-
 /* ── Section ──────────────────────────────────────────────── */
 export default function ProjectsSection() {
   return (
