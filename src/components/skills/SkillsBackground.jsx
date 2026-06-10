@@ -36,7 +36,7 @@ export const DEFAULT_PARAMS = {
   useColor2: true,
   useColor3: true,
 
-  lineCount: 150,
+  lineCount: 70,
   spreadHeight: 40.33,
   spreadDepth: 0,
 
@@ -49,15 +49,15 @@ export const DEFAULT_PARAMS = {
 
   lineOpacity: 0.657,
 
-  signalCount: 100,
+  signalCount: 80,
   speedGlobal: 0.345,
-  trailLength: 8,
+  trailLength: 20,
 
   bloomStrength: 3.0,
   bloomRadius: 0.5,
 
-  churnInterval: 2200,
-  churnCount: 15,
+  churnInterval: 100,
+  churnCount: 150,
 
   // positioning
   offsetX: 25,
@@ -75,7 +75,7 @@ export const DEFAULT_PARAMS = {
   desktopScale: 1.0,
 };
 
-const SEGMENT_COUNT = 150;
+const SEGMENT_COUNT = 60;
 
 export default function SkillsBackground() {
   const mountRef = useRef(null);

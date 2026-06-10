@@ -415,3 +415,8 @@
 .contact__inner {
   width: min(100%, 560px);
 }
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}

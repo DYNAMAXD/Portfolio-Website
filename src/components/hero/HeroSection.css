@@ -105,10 +105,10 @@
   border-radius: 24px;
 
   /* Glassmorphism / translucent effect */
-  background: rgba(14, 14, 14, 0.012); 
+  /* background: rgba(14, 14, 14, 0.012);  */
 
   backdrop-filter: blur(4px) saturate(150%);
-  -webkit-backdrop-filter: blur(7px) saturate(180%);
+  /* -webkit-backdrop-filter: blur(7px) saturate(180%); */
  
 
   z-index: 10;

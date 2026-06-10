@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import './ProjectsSection.css'; 
 const PROJECTS = [
-  {
-    title: 'Text To Speech: Tacotron2 ',
-    skills: ['Torch', 'Log Mel Spectrogram', 'Neural Vocoder'],
-    month: 'JAN', year: '25',
-    link: 'https://github.com/spsaswat/3d_hyperspec_ai',
-    front: 'Development of a Text to Speech model --> get things on  readme file .',
-    back: '--> do this <-- ',
-    progress_text: 'Currently Ongoing',
-    progress_percent: '10%',
+  // {
+  //   title: 'Text To Speech: Tacotron2 ',
+  //   skills: ['Torch', 'Log Mel Spectrogram', 'Neural Vocoder'],
+  //   month: 'JAN', year: '25',
+  //   link: 'https://github.com/spsaswat/3d_hyperspec_ai',
+  //   front: 'Development of a Text to Speech model --> get things on  readme file .',
+  //   back: '--> do this <-- ',
+  //   progress_text: 'Currently Ongoing',
+  //   progress_percent: '10%',
     
-  },
+  // },
   {
     title: 'PhenoFusion 3D',
     skills: ['Python', 'HyperSpectral Imaging', 'PyQt5' , "austrailian national university"],
