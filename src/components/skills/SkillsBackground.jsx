@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
+import { useSectionActive } from '../scroll/SectionScroller';
 import {
   Scene,
   PerspectiveCamera,
@@ -24,8 +24,22 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
 
 // ── Tweak these thresholds (0-1, fraction of section visible) ───────────────
-const THRESHOLD_LINES_FULL = 0.40;
-const THRESHOLD_SIGNALS_START = 0.50;
+// ── Skills section reveal timing (tweak these) ──────────────────────────────
+// Seconds after the section becomes active before the points
+// (the moving signal trails) start fading in.
+const POINTS_ANIMATE_DELAY = 0.1
+
+// Seconds after the section becomes active before the
+// background lines start fading in.
+const LINES_DISPLAY_DELAY = 1;
+
+// How long (seconds) each fade-in takes once it starts.
+const FADE_DURATION = 4.7;
+
+function clamp01(v) {
+  return Math.max(0, Math.min(1, v));
+}
+
 
 export const DEFAULT_PARAMS = {
   colorLine: '#373f48',
@@ -36,7 +50,7 @@ export const DEFAULT_PARAMS = {
   useColor2: true,
   useColor3: true,
 
-  lineCount: 70,
+  lineCount: 90,
   spreadHeight: 40.33,
   spreadDepth: 0,
 
@@ -49,7 +63,7 @@ export const DEFAULT_PARAMS = {
 
   lineOpacity: 0.657,
 
-  signalCount: 80,
+  signalCount: 110,
   speedGlobal: 0.345,
   trailLength: 20,
 
@@ -80,6 +94,17 @@ const SEGMENT_COUNT = 60;
 export default function SkillsBackground() {
   const mountRef = useRef(null);
   const threeRef = useRef(null);
+
+  const isActive = useSectionActive(1); // Skills = index 1
+  const animControlRef = useRef(null);
+
+  // Wall-clock timestamp (ms) of when the section last became active.
+  // null while inactive.
+  const activationTimeRef = useRef(null);
+
+  useEffect(() => {
+    activationTimeRef.current = isActive ? performance.now() : null;
+  }, [isActive]);
 
   const [params, setParams] = useState({ ...DEFAULT_PARAMS });
 
@@ -429,33 +454,13 @@ export default function SkillsBackground() {
       }
     }
 
-    function getScrollProgress() {
-      const section =
-        container.closest('section') ||
-        container;
-
-      const rect =
-        section.getBoundingClientRect();
-
-      const vh = window.innerHeight;
-
-      return Math.max(
-        0,
-        Math.min(
-          1,
-          1 - rect.top / vh
-        )
-      );
-    }
-
     const clock = new Clock();
+ 
 
-    let animId;
+    let animId = null;
 
     function animate() {
-      animId = requestAnimationFrame(
-        animate
-      );
+      animId = requestAnimationFrame(animate);
 
       const time =
         clock.getElapsedTime();
@@ -465,23 +470,20 @@ export default function SkillsBackground() {
 
       const p = paramsRef.current;
 
-      const scroll =
-        getScrollProgress();
+      const activationStart = activationTimeRef.current;
 
-      const lineAlpha = Math.min(
-        1,
-        scroll /
-          THRESHOLD_LINES_FULL
+      const elapsed =
+        activationStart !== null
+          ? (now - activationStart) / 1000
+          : 0;
+
+      const sigAlpha = clamp01(
+        (elapsed - POINTS_ANIMATE_DELAY) / FADE_DURATION
       );
 
-      const sigAlpha =
-        scroll <
-        THRESHOLD_SIGNALS_START
-          ? 0
-          : (scroll -
-              THRESHOLD_SIGNALS_START) /
-            (1 -
-              THRESHOLD_SIGNALS_START);
+      const lineAlpha = clamp01(
+        (elapsed - LINES_DISPLAY_DELAY) / FADE_DURATION
+      );
 
       bloomPass.strength =
         p.bloomStrength;
@@ -653,7 +655,20 @@ export default function SkillsBackground() {
       composer.render();
     }
 
-    animate();
+    function startAnimation() {
+      if (animId === null) animate();
+    }
+
+    function stopAnimation() {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    }
+
+    animControlRef.current = { start: startAnimation, stop: stopAnimation };
+
+    if (isActive) startAnimation();
 
     function onResize() {
       const nw =
@@ -685,7 +700,7 @@ export default function SkillsBackground() {
     };
 
     return () => {
-      cancelAnimationFrame(animId);
+      stopAnimation();
 
       window.removeEventListener(
         'resize',
@@ -762,6 +777,13 @@ export default function SkillsBackground() {
     params.tabletScale,
     params.desktopScale,
   ]);
+
+  useEffect(() => {
+  const controls = animControlRef.current;
+  if (!controls) return;
+  if (isActive) controls.start();
+  else controls.stop();
+  }, [isActive]);
 
   const set = (k, v) =>
     setParams((p) => ({

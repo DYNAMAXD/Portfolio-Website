@@ -101,17 +101,6 @@
 
 /* ─── Card ───────────────────────────────────────────────────────────────── */
 
-@keyframes skills-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .skills__card {
   background: rgba(255, 255, 255, 0.65);
   border: 0.5px solid rgba(0, 0, 0, 0.1);
@@ -123,7 +112,6 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: border-color 0.2s ease, transform 0.2s ease;
-  animation: skills-fade-up 0.45s ease both;
 }
 
 .skills__card:hover {
@@ -258,4 +246,28 @@
   .skills__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Card entrance animation (only plays when section is active) ── */
+@keyframes skillsCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Default state: hidden, no animation — matches the "from" keyframe
+   so nothing flashes before the section becomes active. */
+.skills__card {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+}
+
+/* Only when the grid is marked visible does the animation run. */
+.skills__grid--visible .skills__card {
+  animation: skillsCardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

@@ -7,10 +7,11 @@ import SkillsSection from './components/skills/SkillsSection';
 import CustomCursor from './components/cursor/CustomCursor';
 import ProjectsSection from './components/project/ProjectsSection';
 import ContactSection from './components/contact/ContactSection';
+import SectionScroller from './components/scroll/SectionScroller';
 
 export default function App() {
 
-  const [showCursor, setShowCursor] = useState(false); 
+  const [showCursor, setShowCursor] = useState(false);
 
   useEffect(() => {
 
@@ -39,10 +40,15 @@ export default function App() {
       {showCursor && <CustomCursor />}
 
       <Navbar />
-      <HeroSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ContactSection />
+
+      <SectionScroller
+        sections={[
+          { id: 'hero', element: <HeroSection /> },
+          { id: 'skills', element: <SkillsSection /> },
+          { id: 'work', element: <ProjectsSection /> },
+          { id: 'contact', element: <ContactSection /> },
+        ]}
+      />
     </>
   );
 }

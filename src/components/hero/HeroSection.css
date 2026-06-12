@@ -166,8 +166,7 @@
   font-weight: 700;
 }
 
-.hero__title em {
-  font-style: normal;
+.hero__title em { 
   color: #7f5cff;
 }
 

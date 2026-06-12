@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import SkillsBackground from './SkillsBackground';
+import { useSectionActive } from '../scroll/SectionScroller';
 import './SkillsSection.css';
 
 const DEBUG = false;
@@ -52,6 +54,22 @@ const SKILLS = [
 ];
 
 export default function SkillsSection() {
+  const isActive = useSectionActive(1); // Skills = index 1 in App.tsx
+
+  // animKey forces a remount so the CSS entrance animation can replay.
+  // visible controls whether the "--visible" class (and its animation) is applied.
+  const [animKey, setAnimKey] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (isActive) {
+      setAnimKey(k => k + 1);
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  }, [isActive]);
+
   return (
     <section id="skills" className="skills">
       <div className="skills__canvas">
@@ -68,7 +86,10 @@ export default function SkillsSection() {
           </p>
         </div>
 
-        <div className="skills__grid">
+        <div
+          className={`skills__grid${visible ? ' skills__grid--visible' : ''}`}
+          key={animKey}
+        >
           {SKILLS.map(({ label, cat, items }, i) => (
             <div
               key={label}

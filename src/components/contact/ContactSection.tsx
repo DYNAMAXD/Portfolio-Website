@@ -202,45 +202,6 @@ export default function ContactSection() {
               onChange={e => setMessage(e.target.value)}
             />
 
-            {/* Fuel gauge */}
-            <div className="contact__gauge" aria-hidden="true">
-              <svg viewBox="0 0 120 70" className="contact__gauge-svg">
-                {/* Arc track */}
-                <path d="M10 65 A55 55 0 0 1 110 65" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="5" strokeLinecap="round"/>
-                {/* Filled arc — use dasharray trick */}
-                <path d="M10 65 A55 55 0 0 1 110 65" fill="none"
-                  stroke={gaugeColor}
-                  strokeWidth="5" strokeLinecap="round"
-                  strokeDasharray={`${charPct * 172} 172`}
-                  style={{ transition: 'stroke-dasharray 0.3s ease, stroke 0.4s ease' }}
-                />
-                {/* Tick marks */}
-                {[0,0.25,0.5,0.75,1].map((t,i) => {
-                  const a = (-130 + t * 260) * (Math.PI / 180);
-                  const r1 = 48, r2 = 54, cx = 60, cy = 65;
-                  return (
-                    <line key={i}
-                      x1={cx + r1 * Math.cos(a)} y1={cy + r1 * Math.sin(a)}
-                      x2={cx + r2 * Math.cos(a)} y2={cy + r2 * Math.sin(a)}
-                      stroke="rgba(255,255,255,0.25)" strokeWidth="1.5"
-                    />
-                  );
-                })}
-                {/* Needle */}
-                
-                <g style={{ transform: `rotate(${needleDeg}deg)`, transformOrigin: '60px 65px', transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
-                  <line x1="60" y1="65" x2="60" y2="22" stroke={gaugeColor} strokeWidth="1.5" strokeLinecap="round"
-                    style={{ transition: 'stroke 0.4s ease' }}
-                  />
-                  <circle cx="60" cy="65" r="4" fill="#0d0d18" stroke={gaugeColor} strokeWidth="1.5"/>
-                </g>
-
-                {/* Labels */}
-                <text x="8"  y="72" fontSize="7" fill="rgba(255,255,255,0.25)" fontFamily="Courier New">E</text>
-                <text x="107" y="72" fontSize="7" fill="rgba(255,255,255,0.25)" fontFamily="Courier New">F</text>
-                <text x="53" y="14" fontSize="6.5" fill="rgba(255,255,255,0.18)" fontFamily="Courier New">MSG</text>
-              </svg>
-            </div>
           </div>
 
           {/* Submit */}

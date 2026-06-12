@@ -318,12 +318,12 @@
 
   .contact__title {
     /* font-size: clamp(2rem, 9vw, 3rem); */
-      font-size: clamp(5.4rem, 5vw, 4rem);
+      font-size: clamp(3rem, 5vw, 4rem);
 
   }
 
   .contact__status {
-    font-size: 12.2rem;
+    font-size: 1.2rem;
     letter-spacing: 0.08em;
   }
 

@@ -1,31 +1,31 @@
-import { useState } from 'react';
-import './ProjectsSection.css'; 
+import { useEffect, useState } from 'react';
+import './ProjectsSection.css';
+import { useSectionActive } from '../scroll/SectionScroller';
+
 const PROJECTS = [
-  // {
-  //   title: 'Text To Speech: Tacotron2 ',
-  //   skills: ['Torch', 'Log Mel Spectrogram', 'Neural Vocoder'],
-  //   month: 'JAN', year: '25',
-  //   link: 'https://github.com/spsaswat/3d_hyperspec_ai',
-  //   front: 'Development of a Text to Speech model --> get things on  readme file .',
-  //   back: '--> do this <-- ',
-  //   progress_text: 'Currently Ongoing',
-  //   progress_percent: '10%',
-    
-  // },
-  {
+    // {
+    //   title: 'Text To Speech: Tacotron2 ',
+    //   skills: ['Torch', 'Log Mel Spectrogram', 'Neural Vocoder'],
+    //   month: 'JAN', year: '25',
+    //   link: 'https://github.com/spsaswat/3d_hyperspec_ai',
+    //   front: 'Development of a Text to Speech model --> get things on  readme file .',
+    //   back: '--> do this <-- ',
+    //   progress_text: 'Currently Ongoing',
+    //   progress_percent: '10%',
+    // },
+    {
     title: 'PhenoFusion 3D',
-    skills: ['Python', 'HyperSpectral Imaging' , "austrailian national university"],
+    skills: ['Python', 'HyperSpectral Imaging', 'austrailian national university'],
     month: 'JAN', year: '25',
     link: 'https://github.com/spsaswat/3d_hyperspec_ai',
     front: 'PhenoFusion 3D is an integrated 3D–hyperspectral analytics tool that extracts structural and spectral traits from plant scans.',
     back: 'We are a team of 4 from VIT and we have collaborated with Austrailian National University , under guidance of Syed Ibrahim S P sir ',
     progress_text: 'Currently Ongoing',
     progress_percent: '72%',
-    
   },
   {
     title: 'ExplainabilityOnBrainTumorDataset',
-    skills: ['Python', 'TensorFlow','ResNet50', 'GradCam'],
+    skills: ['Python', 'TensorFlow', 'ResNet50', 'GradCam'],
     month: 'APR', year: '26',
     link: 'https://github.com/DYNAMAXD/ExplainabilityOnBrainTumorDataset',
     front: 'A Deep Learning project focused on detecting brain tumors from MRI scans and improving model transparency using Explainable AI techniques like Grad-CAM ',
@@ -35,14 +35,14 @@ const PROJECTS = [
   },
   {
     title: 'AI-Powered Crop Recommendation System',
-    skills: ['XGBoost', 'Google Firebase' , 'React'],
+    skills: ['XGBoost', 'Google Firebase', 'React'],
     month: 'SEP', year: '25',
     link: 'https://github.com/BeeBasic/AI-Crop-Planner',
     front: 'Built a  personalized crop recommendations on the current soil, weather, and real-time market data, for profitability and resource efficiency.',
     back: 'sujal bhai bata do isme kya likhu',
     progress_text: 'Completed',
     progress_percent: '100%',
-  },   
+  },
   {
     title: 'Food for Everyone',
     skills: ['Torch', ' FastAPI', 'SDG'],
@@ -52,7 +52,7 @@ const PROJECTS = [
     back: 'Tackling "Zero Hunger" from the Sustainable Development Goals by UN , we imagined a more Grounded Approach to this problem as we tried to be the bridge between the food surplus and food demands in a city.',
     progress_text: 'Completed',
     progress_percent: '100%',
-  },   
+  },
 ];
 
 /* ── Animated link button ─────────────────────────────────── */
@@ -63,27 +63,28 @@ function ProjectLink({ href }) {
       target="_blank"
       rel="noopener noreferrer"
       className="pc__link"
-      onClick={e => e.stopPropagation()} /* prevent card flip on click */
+      onClick={e => e.stopPropagation()}
     >
       <span className="pc__link-text">View Project</span>
       <span className="pc__link-icon" aria-hidden="true">
-        {/* Arrow SVG */}
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8">
           <path d="M3 8h10M9 4l4 4-4 4"/>
         </svg>
       </span>
-      {/* animated underline + glow line */}
       <span className="pc__link-bar" />
     </a>
   );
 }
 
 /* ── Card ─────────────────────────────────────────────────── */
-function ProjectCard({ project }) {
+function ProjectCard({ project, index }) {
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <div className={`pc-wrapper${flipped ? ' pc-wrapper--flipped' : ''}`}>
+    <div
+      className={`pc-wrapper${flipped ? ' pc-wrapper--flipped' : ''}`}
+      style={{ animationDelay: `${index * 90}ms` }}
+    >
       <div className="pc">
 
         {/* FRONT */}
@@ -141,7 +142,6 @@ function ProjectCard({ project }) {
               MORE
             </span>
 
-            {/* MOVED INSIDE CARD */}
             <button
               className="pc__flip-btn"
               onClick={() => setFlipped(true)}
@@ -184,16 +184,34 @@ function ProjectCard({ project }) {
     </div>
   );
 }
+
 /* ── Section ──────────────────────────────────────────────── */
 export default function ProjectsSection() {
+  const isActive = useSectionActive(2); // Work = index 2 in App.tsx
+
+  const [animKey, setAnimKey] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (isActive) {
+      setAnimKey(k => k + 1);
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+  }, [isActive]);
+
   return (
     <section id="work" className="projects">
       <div className="projects__header">
         <span className="projects__eyebrow">Selected Work</span>
         <h2 className="projects__title">Projects I'm <em>working on</em></h2>
       </div>
-      <div className="projects__grid">
-        {PROJECTS.map(p => <ProjectCard key={p.title} project={p} />)}
+      <div
+        className={`projects__grid${visible ? ' projects__grid--visible' : ''}`}
+        key={animKey}
+      >
+        {PROJECTS.map((p, i) => <ProjectCard key={p.title} project={p} index={i} />)}
       </div>
     </section>
   );

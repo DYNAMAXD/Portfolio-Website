@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-
+import { useSectionActive } from '../scroll/SectionScroller';
 import {
   Scene,
   FogExp2,
@@ -62,6 +62,9 @@ export default function FractalBackground() {
     animId: number;
   } | null>(null);
 
+  const isActive = useSectionActive(0); // Hero = index 0
+  const animControlRef = useRef<{ start: () => void; stop: () => void } | null>(null);
+
   useEffect(() => {
     const container = mountRef.current;
 
@@ -74,7 +77,7 @@ export default function FractalBackground() {
 
     const params = randomizeParams(alg.defaults);
 
-    const pointCount = adaptivePointCount(50000);
+    const pointCount = adaptivePointCount(160000);
 
     const rotX = randomRotationSpeed();
 
@@ -322,27 +325,32 @@ export default function FractalBackground() {
     );
 
     // ── Animation loop ─────────────────────────────────────────────────────
-    let animId: number;
+    let animId: number | null = null;
 
     function animate() {
-      animId =
-        requestAnimationFrame(
-          animate
-        );
+      animId = requestAnimationFrame(animate);
 
       particleMesh.rotation.y += rotX;
-
       particleMesh.rotation.x += rotY;
 
       controls.update();
-
-      renderer.render(
-        scene,
-        camera
-      );
+      renderer.render(scene, camera);
     }
 
-    animate();
+    function startAnimation() {
+      if (animId === null) animate();
+    }
+
+    function stopAnimation() {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    }
+
+    animControlRef.current = { start: startAnimation, stop: stopAnimation };
+
+    if (isActive) startAnimation();
 
     // ── Resize ─────────────────────────────────────────────────────────────
     function onResize() {
@@ -363,13 +371,10 @@ export default function FractalBackground() {
       onResize
     );
 
-    stateRef.current = {
-      renderer,
-      animId,
-    };
+
 
     return () => {
-      cancelAnimationFrame(animId);
+      stopAnimation();
 
       window.removeEventListener(
         'resize',
@@ -393,7 +398,12 @@ export default function FractalBackground() {
       }
     };
   }, []);
-
+  useEffect(() => {
+      const controls = animControlRef.current;
+      if (!controls) return;
+      if (isActive) controls.start();
+      else controls.stop();
+    }, [isActive]);
   return (
     <div
       ref={mountRef}

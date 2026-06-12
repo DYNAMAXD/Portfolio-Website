@@ -3,47 +3,49 @@ import './Navbar.css';
 
 const LINKS = ['About', 'Skills', 'Work', 'Contact'];
 
+// Maps nav labels to the section ids used in SectionScroller
+const SECTION_IDS: Record<string, string> = {
+  About: 'hero',
+  Skills: 'skills',
+  Work: 'work',
+  Contact: 'contact',
+};
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open,     setOpen]     = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    // The page no longer scrolls on <body> — .snap-container does.
+    const container = document.querySelector('.snap-container');
+    if (!container) return;
+
+    const onScroll = () => setScrolled(container.scrollTop > 40);
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => container.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTo = (id) => {
+  const scrollTo = (label: string) => {
     setOpen(false);
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
+    const id = SECTION_IDS[label];
+    document.getElementById(`section-${id}`)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
-      <a className="nav__logo" href="#" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+      <a className="nav__logo" href="#" onClick={e => { e.preventDefault(); scrollTo('About'); }}>
         &lt;DynamaxD /&gt;
       </a>
 
       {/* Desktop links */}
       <ul className="nav__links">
         {LINKS.map(l => (
-
-                <li key={l}>
-          <button
-            className="nav__link"
-            onClick={() => {
-              if (l === 'About') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              } else {
-                scrollTo(l);
-              }
-            }}
-          >
-            {l}
-          </button>
-        </li>
-
-        ))} 
+          <li key={l}>
+            <button className="nav__link" onClick={() => scrollTo(l)}>
+              {l}
+            </button>
+          </li>
+        ))}
       </ul>
 
       {/* Mobile hamburger */}
@@ -51,21 +53,14 @@ export default function Navbar() {
         onClick={() => setOpen(o => !o)} aria-label="Menu">
         <span /><span /><span />
       </button>
- 
+
       {/* Mobile drawer */}
       <div className={`nav__drawer ${open ? 'nav__drawer--open' : ''}`}>
         {LINKS.map(l => (
           <button
             key={l}
             className="nav__drawer-link"
-            onClick={() => {
-              if (l === 'About') {
-                setOpen(false);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              } else {
-                scrollTo(l);
-              }
-            }}
+            onClick={() => scrollTo(l)}
           >
             {l}
           </button>
