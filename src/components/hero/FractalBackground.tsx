@@ -57,11 +57,6 @@ function createCircleTexture() {
 export default function FractalBackground() {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
-  const stateRef = useRef<{
-    renderer: WebGLRenderer;
-    animId: number;
-  } | null>(null);
-
   const isActive = useSectionActive(0); // Hero = index 0
   const animControlRef = useRef<{ start: () => void; stop: () => void } | null>(null);
 

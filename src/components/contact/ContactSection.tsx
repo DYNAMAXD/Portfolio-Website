@@ -28,14 +28,6 @@ export default function ContactSection() {
 
   const charPct = Math.min(1, message.length / MAX_CHARS);
 
-  // Gauge needle angle: -130deg (empty) → +130deg (full)
-  const needleDeg = -130 + charPct * 260;
-
-  // Gauge color: green → yellow → red
-  const gaugeColor = charPct < 0.6
-    ? `hsl(${160 - charPct * 120}, 70%, 50%)`
-    : `hsl(${160 - charPct * 120}, 80%, 50%)`;
-
   async function handleSubmit(e) {
   e.preventDefault();
 
